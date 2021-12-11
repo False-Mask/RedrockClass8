@@ -17,42 +17,28 @@ import androidx.core.app.ActivityCompat;
 public class MainActivity extends AppCompatActivity {
 
     Button btnJump1;
+    Button btnJump2;
+    Button btnJump3;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initComponent();
+        initListener();
+
+    }
+
+    private void initListener() {
+        btnJump1.setOnClickListener((v) -> startActivity(new Intent(this, NormalActivity.class)));
+        btnJump2.setOnClickListener((v) -> startActivity(new Intent(this, DangerousActivity.class)));
+        btnJump3.setOnClickListener((v) -> startActivity(new Intent(this, SpecialActivity.class)));
+    }
+
+    private void initComponent() {
         btnJump1 = findViewById(R.id.btn_jump_1);
-
-        btnJump1.setOnClickListener((v) -> {
-
-                    if (PackageManager.PERMISSION_GRANTED == ActivityCompat
-                            .checkSelfPermission(this, Manifest.permission.CALL_PHONE)) {
-                        final Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
-                        startActivity(intent);
-                    } else {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
-                            goSetting();
-                        }else {
-                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-                        }
-                    }
-                }
-        );
-
-    }
-
-    private void goSetting() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+        btnJump2 = findViewById(R.id.btn_jump_2);
+        btnJump3 = findViewById(R.id.btn_jump_3);
     }
 }

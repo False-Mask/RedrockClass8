@@ -1,7 +1,3 @@
----
-
----
-
 > # Android补充复习课
 >
 > - 可以提前做一个意见收集表  把前面不太懂的内容 统一一下
@@ -31,7 +27,9 @@
 
 
 
-## Review
+## ~~P~~review
+
+Review和Preview有个P的区别。
 
 
 
@@ -810,7 +808,7 @@ SharedPreferences又叫SP（为了方便，下文的SP均代指SharedPreferences
 
 - **不要**使用SP数据库存储太多的信息，**不要！不要！！不要！！！**
 
-  SP被设计出来的初衷就是以**键值对**的方式存储**配置信息**，配置信息是少量的，比如这个页面的配置，设置的一些配置选项，这些都是允许的。存储账号密码啥的虽然很离谱，但是也是勉强能接受的。但是如果将一个大型页面的所有数据都存储进入SP，那就显得怪诞了。
+  SP被设计出来的初衷就是以**键值对**的方式存储**配置信息**，配置信息是**少量**的，比如这个页面的配置，设置的一些配置选项，这些都是允许的。存储账号密码啥的虽然很离谱，但是也是勉强能接受的。但是如果将一个大型页面的所有数据都存储进入SP，那就显得怪诞了。
 
 
 
@@ -837,97 +835,243 @@ SharedPreferences又叫SP（为了方便，下文的SP均代指SharedPreferences
 
 #### 权限分类
 
+大致有三类权限
+
 - 安装时权限
-
-  这类权限或许是比较通用,**我推测**可能没和用户隐私有过大的牵扯所以只要声明在安装后系统会自动同意。
-
-  比如下列请求
-
-  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/install-time.svg" alt="The left image shows a list of an app's install-time permissions. The     right image shows a pop-up dialog that contains 2 options: allow and deny." style="zoom: 25%;" />
-
-  对于涉及到这些权限的内容我们只需要声明,安装app后系统会自动给我们批准。we
-
-  权限声明挺简单的
-
-  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211206223729069.png" alt="image-20211206223729069" style="zoom:67%;" />
-
 - 运行时权限
-
-  运行时权限就是比较危险的权限了，与用户隐私涉及比价深，所以我们需要在运行app的时候申请权限。
-
-  比如我们要通过一个按钮点击给10086打电话。
-
-  在不考虑权限的基础上我们直接跑，发现
-
-  ```java
-  final Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
-  startActivity(intent);
-  ```
-
-  > java.lang.SecurityException: Permission Denial:
-
-  运行时权限必须在运行的时候申请，光是在Manifest文件中申明系统是不会认账的。
-
-  所以得加上这段代码
-
-  ```java
-  (v) -> {
-  
-      if (PackageManager.PERMISSION_GRANTED == ActivityCompat
-              .checkSelfPermission(this, Manifest.permission.CALL_PHONE)) {
-          final Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
-          startActivity(intent);
-      } else {
-          ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-      }
-  
-  }
-  ```
-
-  checkSelfPermission是检查对应的权限是否被允许。
-
-  然后requestPermissions是动态申请权限
-
-  然后可以在activity覆写一个方法来检测请求之后之后的回调
-
-  ```java
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-      
-  }
-  ```
-
-  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211207120230475.png" alt="image-20211207120230475" style="zoom:25%;" />
-
-  可以看到弹出了一个权限申请弹窗。
-
-  允许后再次点击就跳转到拨号界面。
-
-  但是有一个很奇怪的问题，就是如果我们禁止之后，以后再也不会弹窗了。
-
-  因为禁止以后下次通过requestPermissions的时候会自动拒绝。
-
-  所以这里给出一种权限被拒绝的解决方案。
-
-  先判断一下是否被拒绝如果被拒绝了会返回true。
-
-  如果被拒绝了就直接跳转到setting界面。
-
-  ```java
-  if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
-      Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-          Uri uri = Uri.fromParts("package", getPackageName(), null);
-          intent.setData(uri);
-          startActivity(intent);
-  }
-  ```
-
-  
-
 - 特殊权限
 
+你可能会问我哪知道哪些是安装时权限，那些是运行时权限？可以在[文档](https://developer.android.google.cn/reference/android/Manifest.permission#ACCEPT_HANDOVER)里面查询
+
+比如这里展示几个权限
+
+![image-20211211131323243](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211131323243.png)
+
+
+
+![image-20211211131449108](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211131449108.png)
+
+
+
+![image-20211211131600720](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211131600720.png)
+
+上面展示了
+
+网络权限，相机权限，存储权限的相关描述，他们分别对应安装时，运行时，特殊权限。
+
+可以发现
+
+Protection level 分为几个等级
+
+- normal表示安装时权限。
+- dangerous表示运行时权限
+- appop表示特殊权限
+
+
+
+
+
+##### 安装时权限
+
+这类权限或许是比较通用,**我推测**可能没和用户隐私有过大的牵扯所以**只要声明在安装后系统会自动同意。**
+
+比如下列请求
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/install-time.svg" alt="The left image shows a list of an app's install-time permissions. The     right image shows a pop-up dialog that contains 2 options: allow and deny." style="zoom: 25%;" />
+
+对于涉及到这些权限的内容我们只需要声明,安装app后系统会自动给我们批准。
+
+权限声明挺简单的
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211206223729069.png" alt="image-20211206223729069" style="zoom:67%;" />
+
+> 小结：
+>
+> 对于安装时权限我们只需要在Manifest文件里申明即可。
+
+
+
+
+
+##### 运行时权限
+
+运行时权限就是**比较危险**的权限了，与用户隐私涉及比价深。在Android 6.0(API 23)以前是只需要申明权限而不用请求权限的，但是我们的手机的系统版本通常是大于6.0的，所以我们需要在运行app的时候申请权限。
+
+比如我们要通过一个按钮点击给10086打电话。
+
+在不考虑申请权限的基础上我们直接跑，发现
+
+```java
+final Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
+startActivity(intent);
+```
+
+> java.lang.SecurityException: Permission Denial:
+
+运行时权限在Android 6.0(API 23)以上必须在运行的时候申请，光是在Manifest文件中申明系统是不会认账的。
+
+所以得加上这段代码
+
+```java
+(v) -> {
+
+    if (PackageManager.PERMISSION_GRANTED == ActivityCompat
+            .checkSelfPermission(this, Manifest.permission.CALL_PHONE)) {
+        final Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
+        startActivity(intent);
+    } else {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+    }
+
+}
+```
+
+checkSelfPermission是检查对应的权限是否被允许。
+
+然后requestPermissions是动态申请权限
+
+然后可以在activity覆写一个方法来检测请求之后之后的回调
+
+```java
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    
+}
+```
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211207120230475.png" alt="image-20211207120230475" style="zoom:25%;" />
+
+可以看到弹出了一个权限申请弹窗。
+
+允许后再次点击就跳转到拨号界面。
+
+但是有一个很奇怪的问题，就是如果我们禁止之后，以后再也不会弹窗了。
+
+因为禁止以后下次通过requestPermissions的时候会自动拒绝。
+
+所以这里给出一种权限被拒绝的解决方案。
+
+先判断一下是否被拒绝如果被拒绝了会返回true。
+
+如果被拒绝了就直接跳转到setting界面。
+
+```java
+if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)){
+    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+}
+```
+
+> 小结：
+>
+> 运行时权限需要
+>
+> - 在Manifest中申明
+> - 在app跑起来的时候通过调用requestPermissions来动态地申请(申请成功一次以后可以一直使用)，如果被拒绝了就得引导用户去设置里面把权限打开(这对于不同的手机生产产商有区别)
+
+
+
+##### 特殊权限
+
+特殊权限比较少，但是每个权限的涉猎都比较广，可能会危害到用户的隐私。这里只讲一个特殊(其他的可能用不上。)
+
+注意，注意，注意！！！特殊权限特殊的一点是，当你按照运行时权限申请的时候，先申明，然后动态去请求。你会发现：
+
+- 没有弹窗提示了
+- onRequestPermissionsResult直接返回false了
+
+这就是说他不能发弹窗让用户选择是否接受了。因为系统默认直接给你返回false了。
+
+对于特殊权限的**唯一**授权方式是引导用户到对应app的设置里面授予权限。
+
+
+
+###### 存储权限
+
+存储权限是比较常见的，也是比较常用的。
+
+我们的软件很可能会写一些文件，读取一些文件，频繁和文件打交道，所以存储权限是比较常见的。
+
+- 概述
+
+  > 在讲Android存储权限之前，先聊聊Android的存储策略，Android的存储空间分为两个部分
+  >
+  > - 内部存储空间
+  > - 外部存储空间
+
+- 权限
+
+  > 与存储相关的权限有3种
+  >
+  > - [READ_EXTERNAL_STORAGE](https://developer.android.google.cn/reference/android/Manifest.permission#READ_EXTERNAL_STORAGE)
+  >
+  > - [WRITE_EXTERNAL_STORAGE](https://developer.android.google.cn/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE)
+  > -  [MANAGE_EXTERNAL_STORAGE](https://developer.android.google.cn/reference/android/Manifest.permission#MANAGE_EXTERNAL_STORAGE)
+
+- 权限演变
+
   
+
+  > 最开始的时候只要是访问app路径外的外部存储空间都得表明READ_EXTERNAL_STORAGE，写入相应的就需要WRITE_EXTERNAL_STORAGE。
+  >
+  > 到了Android 10 （API 29）多了一个叫[Scoped Storage](https://developer.android.google.cn/about/versions/10/privacy/changes#scoped-storage)的限制，单申请读写权限时没有任何意义的。因为申请成功了也不能访问外部空间。
+  >
+  > 如果要在9.0的版本下访问外部的资源得在之前动态权限申请的基础上在manifest里面的application标签下加入
+  >
+  > ```xml
+  > android:requestLegacyExternalStorage="true"
+  > ```
+  >
+  > ***又***从Android 11（API 30）开始，**为了更好地保护用户的隐私**，原来的requestLegacyExternalStorage也被ban掉了。他被替换为了一个更加严格的权限，MANAGE_EXTERNAL_STORAGE。值得注意的是这个权限是个特殊权限。
+
+- 外部存储权限的申请
+
+  > - Android 10以前
+  >
+  >   简单的动态权限声明。
+  >
+  >   manifest文件中声明
+  >
+  >   ```xml
+  >   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  >   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  >   ```
+  >
+  >   运行时申请
+  >
+  >   ```java
+  >   requestPermissions();
+  >   ```
+  >
+  > - Android 10
+  >
+  >   在原来的基础上在manifest文件中加入
+  >
+  >   android:requestLegacyExternalStorage="true"
+  >
+  > - Android 11
+  >
+  >   还记得前面那句话吗？
+  >
+  >   对于特殊权限的**唯一**授权方式是引导用户到对应app的设置里面授予权限。
+  >
+  >   所以我们申请权限得这样
+  >
+  >   ```java
+  >   private void goSetting() {
+  >       Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+  >       Uri uri = Uri.fromParts("package", getPackageName(), null);
+  >       intent.setData(uri);
+  >       startActivity(intent);
+  >   }
+  >   ```
+  >
+  >   跳转到应用详细界面，让用户自行赋予权限。
+  >
+  > 特殊权限大致就这样。
 
 
 
@@ -935,7 +1079,13 @@ SharedPreferences又叫SP（为了方便，下文的SP均代指SharedPreferences
 
 [官方文档 Permissions Overview](https://developer.android.google.cn/guide/topics/permissions/overview)
 
+[官方文档 Data and file storage overview](https://developer.android.google.cn/training/data-storage)
 
+[官方文档 Android 10 隐私变动](https://developer.android.google.cn/about/versions/10/privacy#top-privacy-changes)
+
+[官方文档 Android 11 隐私变动](https://developer.android.google.cn/about/versions/11/privacy#top-privacy-changes)
+
+[官方文档 Android Scoped Storage](https://developer.android.google.cn/about/versions/10/privacy/changes#scoped-storage)
 
 
 
@@ -1323,6 +1473,16 @@ SoundPool的使用大致就是如此
 
 
 ### Camera
+
+> Camera是什么我就不多讲了，相机，没了，相机时用来干什么的？除了拍照，录像还能干啥嘛。
+
+
+
+#### 拍照
+
+
+
+#### 录像
 
 
 
