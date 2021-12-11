@@ -1480,13 +1480,128 @@ SoundPool的使用大致就是如此
 
 #### 拍照
 
+试想这完成一个拍照软件，点击后跳转到相机，然后照片拍好以后在页面里显示刚才拍的照片。
 
+- 直接返回
+
+  拍照就是调用相机，调用相机其实是比较轻松的，startActivityForResult完事。
+
+  ```java
+  intent.putExtra(MediaStore.EXTRA_OUTPUT);
+  startActivityForResult(intent, RESULT_CODE);
+  ```
+
+  然后再onActivityResult设置
+
+  ```java
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+      super.onActivityResult(requestCode, resultCode, data);
+      if (resultCode != RESULT_OK) return;
+     	Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+      ivShow.setImageBitmap(bitmap);
+  }
+  ```
+
+  好像核心代码并不难。
+
+  
+
+  ![image-20211211231800217](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211231800217.png)
+
+  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211231656916.png" alt="image-20211211231656916" style="zoom:25%;" />
+
+  
+
+  如果这样的话可以看见图片是比较糊的。主要的原因是直接通过照相机放回的Bitmap是一个缩略图，所以比较糊。
+
+
+
+- 本地存储后使用图片文件进行展示。
+
+  只要在startActivity中传入一个键值对即可，photoURI为图片的存放Uri路径。
+
+  ```java
+  intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+  ```
+
+  这里的代码有些长有些难以理解，大致说说，先通过getExternalFilesDir获取了一个本地存储路径。
+
+  通过createTempFile创建一个唯一的临时文件，然后吧路径记录下来，然后把File对象返回，最后把File通过FileProvider转化为Uri传入到Intent里面。
+
+  ```java
+  File picFile = null;
+              try {
+                  picFile = createImageFile();
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+  
+  Uri photoURI = FileProvider.getUriForFile(this, getPackageName() + "." + "fileprovider", picFile);
+  
+  private File createImageFile() throws IOException {
+          File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+          File image = File.createTempFile(
+                  "pic",  /* prefix */
+                  ".jpg",         /* suffix */
+                  storageDir      /* directory */
+          );
+  
+          // Save a file: path for use with ACTION_VIEW intents
+          currentPhotoPath = image.getAbsolutePath();
+          return image;
+      }
+  ```
+
+  对了在使用FileProvider的时候得在manifest里面加入一个application标签下加入一个provider配置
+
+  ```xml
+  <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="com.example.multimedia.fileprovider"
+      android:exported="false"
+      android:grantUriPermissions="true">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/file_paths" />
+  </provider>
+  ```
+
+  以及一个xml配置文件
+
+  ```xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <paths xmlns:android="http://schemas.android.com/apk/res/android">
+      <external-files-path
+          name="my_images"
+          path="Pictures"/>
+  </paths>
+  ```
+
+  
 
 #### 录像
 
+类似于前面的功能，我们可以实现很轻松实现，跳转到相机，录一个视频，然后播放。(其实比拍照还简单)
 
+```java
+public static final int REQUEST_VIDEO_CAPTURE = 1;
+Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
 
+......
 
+@Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            vvShow.setVideoURI(videoUri);
+            vvShow.start();
+        }
+    }
+```
+
+通过Intent跳转到录制界面，然后在ActivityResult之时获取intent里面uri信息，最后通过ViewView播放。(其实使用MediaPlayer播放视频也可以)。
 
  
 
@@ -1511,6 +1626,8 @@ Camera
 
 
 ## 网络请求
+
+
 
 
 

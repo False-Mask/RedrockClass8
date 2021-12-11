@@ -15,7 +15,7 @@ import com.example.multimedia.R;
 public class RecordActivity extends AppCompatActivity {
 
 
-    static final int REQUEST_VIDEO_CAPTURE = 1;
+    public static final int REQUEST_VIDEO_CAPTURE = 1;
     Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
     VideoView vvShow;
