@@ -553,13 +553,7 @@ how to create constraint chain.....
 
 
 
-##### helper
-
-
-
-
-
-###### group
+##### group
 
 Group可以控制组内的引用的visibility和elevation
 
@@ -618,33 +612,62 @@ note：
 
 barrier比较简单
 
+barrier是一个帮助类。
+
+他的主要用途就是语言切换或者其他引起界面View大小变动中的适配。
+
+关说是不行的，得看实际场景。
+
+如果我们用GuideLine写了一个登陆界面
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212163939949.png" alt="image-20211212163939949" style="zoom: 80%;" />
+
+界面元素显示正常。
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164252214.png" alt="image-20211212164252214" style="zoom:25%;" />
+
+
+
+适配一下语言。
+
+发现什么了，语言变化了，TextView的长度变了，TextView跑到EditText那里去了。这样不好
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164452083.png" alt="image-20211212164452083" style="zoom:25%;" />
+
+这时候就该Barrier上场了。删掉GuideLine，加入一个Barrier，然后把两个TextView加入进去，然后设置Barrier的方向为right。
+
+这样Barrier的位置就处于barrier内部的View的最右边。
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164740719.png" alt="image-20211212164740719" style="zoom: 80%;" />
+
+切换语言前后不会出现覆盖的问题了。
+
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164900315.png" alt="image-20211212164900315" style="zoom: 25%;" />
+
+Barrier的使用大致如此，只要遇上需要确定边界的都可以使用Barrier，不要认为只有语言切换才会使用到Barrier。
+
+
+
+##### 拓展
+
+有兴趣就去了解一下。
+
+其他的Constraint Helper的用法
+
+- ###### flow
+
+- ###### layer
+
+- ###### 自定义helper
 
 
 
 
+#### 参考
 
+Bilibili教程 [part1](https://www.bilibili.com/video/BV1w4411t7UQ?p=3) .[part2](https://www.bilibili.com/video/BV1w4411t7UQ?p=4)，[part3](https://www.bilibili.com/video/BV1w4411t7UQ?p=8)(比较通俗简单)
 
-###### flow
-
-
-
-
-
-###### layer
-
-
-
-
-
-###### custom helper
-
-
-
-
-
-内容参考自
-
-[Bilibili教程](https://www.bilibili.com/video/BV1eh411d7T9?t=17.3)
+[Bilibili教程](https://www.bilibili.com/video/BV1eh411d7T9?t=17.3)（比较硬核）
 
 [ConstraintLayout引导文档](https://developer.android.google.cn/training/constraint-layout)
 

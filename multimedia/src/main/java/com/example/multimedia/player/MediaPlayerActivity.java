@@ -1,4 +1,4 @@
-package com.example.multimedia.media;
+package com.example.multimedia.player;
 
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;

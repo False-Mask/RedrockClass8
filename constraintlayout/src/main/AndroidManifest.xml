@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RedrockClass8">
         <activity
+            android:name=".UpUseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrimaryUseActivity"
+            android:exported="false" />
+        <activity
             android:name=".ConstraintBarrier"
             android:exported="false" />
         <activity

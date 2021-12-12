@@ -35,17 +35,17 @@
         android:layout_height="wrap_content"
         android:text="Camera"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintBottom_toTopOf="@+id/btn_media_store"
         app:layout_constraintEnd_toEndOf="@+id/btn_sound_pool"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/btn_sound_pool"
         app:layout_constraintTop_toBottomOf="@+id/btn_sound_pool" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_media_store"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="MediaStore"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btn_camera"

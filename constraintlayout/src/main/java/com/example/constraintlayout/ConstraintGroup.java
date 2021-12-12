@@ -1,6 +1,5 @@
 package com.example.constraintlayout;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,19 +17,16 @@ public class ConstraintGroup extends AppCompatActivity {
     Button btnSetVisibility;
     Group groupVisibility;
 
-    Button btnJump;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_constraint_helper);
-        btnSetElevation = findViewById(R.id.btn_set_elevation);
-        groupElevation = findViewById(R.id.group);
-        btnSetVisibility = findViewById(R.id.btn_set_visibility);
-        groupVisibility = findViewById(R.id.group_visibility);
-        btnJump = findViewById(R.id.btn_jump);
 
+        initComponent();
+        initListener();
+    }
 
+    private void initListener() {
         btnSetVisibility.setOnClickListener((v)->{
             isVisible = !isVisible;
             groupVisibility.setVisibility( isVisible ? View.VISIBLE:View.GONE);
@@ -54,10 +50,12 @@ public class ConstraintGroup extends AppCompatActivity {
 
             }).start();
         });
+    }
 
-        btnJump.setOnClickListener(v -> {
-            startActivity(new Intent(this,ConstraintGuideLine.class));
-        });
-
+    private void initComponent() {
+        btnSetElevation = findViewById(R.id.btn_set_elevation);
+        groupElevation = findViewById(R.id.group);
+        btnSetVisibility = findViewById(R.id.btn_set_visibility);
+        groupVisibility = findViewById(R.id.group_visibility);
     }
 }

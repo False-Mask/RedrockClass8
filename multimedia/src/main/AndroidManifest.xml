@@ -22,7 +22,7 @@
             android:name=".sound.SoundPoolActivity"
             android:exported="false" />
         <activity
-            android:name=".media.MediaPlayerActivity"
+            android:name=".player.MediaPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -33,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".store.StoreActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

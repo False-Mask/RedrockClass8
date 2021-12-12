@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Constraintlayout</string>
+    <string name="tv_user_name">UserName</string>
+    <string name="tv_password">Pwd</string>
+</resources>
