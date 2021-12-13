@@ -411,7 +411,7 @@ app:layout_constraintHorizontal_bias=""
 
 ***假如***你有一张图片
 
-<img src="C:\Users\Fool\AppData\Roaming\Typora\typora-user-images\image-20211205170848000.png" alt="image-20211205170848000" style="zoom:25%;" />
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-202112051708480000.png" alt="image-20211205170848000" style="zoom:25%;" />
 
 你要把他放在一个ImgaView中
 
@@ -1626,6 +1626,24 @@ startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
 
 通过Intent跳转到录制界面，然后在ActivityResult之时获取intent里面uri信息，最后通过ViewView播放。(其实使用MediaPlayer播放视频也可以)。
 
+
+
+
+
+### MediaStore
+
+这个东西不讲，只会稍微提一下。MediaStore是一个多媒体的库。他内部保存了手机里共享的一些图片，音频，视频文件。
+
+涉及内容有些多，如果要学会他的使用得会ContentProvider，而且寒假还不一定能用到。
+
+
+
+#### 参考资料
+
+[Media](https://developer.android.google.cn/training/data-storage/shared/media?hl=en)
+
+[ContentProvider](https://developer.android.google.cn/guide/topics/providers/content-providers?hl=en)
+
  
 
 ### 参考
@@ -1648,11 +1666,162 @@ Camera
 
 
 
+
+
 ## 网络请求
 
+这里这里分为两个比较重要的东西。
+
+- Postman的使用
+- 网络请求工具类的的封装
 
 
 
+### Postman
+
+比较简单，课上演示基本使用
+
+#### Postman的使用
+
+上课演示
+
+
+
+
+
+### NetUtils封装
+
+本次选用的封装的是HttpURLCtonnection。会和IO流有比较多的接触。（这里会稍微复习一下使用HttpURLConnection进行网络请求的步骤）。
+
+我们进行HttpURLCtonnection网络请求一般要进行如下步骤
+
+- 获取HttpURLCtonnection实例
+- 调用HttpURLCtonnection.connect开启连接
+- 如果是Post请求获取OutPutStream写入参数信息。（Get请求在获取实例的时候已经传入url的时候就已经拼接了参数）。
+- 获取InputStream将**Stream**内部的内容读取成**String**
+
+换成是流程图是这样的
+
+![HttpURLConnection.drawio](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/HttpURLConnection.drawio.png)
+
+
+
+#### 封装过程演示
+
+先通过method来拼接url，如果是get请求就把参数拼接到url后，如果是post就不拼接（post是直接写入到output流里面）
+
+```java
+private static String appendUrl(String url, HashMap<String, String> params, String method) {
+    String str = url;
+    if (method.equalsIgnoreCase("get")) str += appendParams(params);
+    return str;
+}
+
+private static String appendParams(HashMap<String, String> params) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : params.keySet()) {
+            stringBuilder.append(s).append("=").append(params.get(s)).append("&");
+        }
+        if (stringBuilder.length() != 0) {
+            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+        }
+        return stringBuilder.toString();
+}
+```
+
+
+
+然后通过url获取到HttpURLConnection实例
+
+```java
+URL mURL = new URL(mUrl);
+connection = (HttpURLConnection) mURL.openConnection();
+```
+
+
+
+配置连接参数
+
+```java
+connection.setRequestMethod(method);
+connection.setConnectTimeout(8000);//设置最大连接时间，单位为毫
+connection.setReadTimeout(8000);//设置最大的读取时间，单位为毫秒，
+connection.setDoOutput(true);//允许输入流
+connection.setDoInput(true);//允许输出流
+```
+
+
+
+打开连接
+
+```java
+connection.connect();
+```
+
+
+
+获取输出结果这里值得注意的是，如果是post请求还得获取到output流然后把对应的参数信息写入。
+
+然后将对应的input流拿到，读取input流里面的字符串信息。
+
+```java
+if (method.equalsIgnoreCase("post")) {
+    outputStream = connection.getOutputStream();
+    outputStream.write(appendParams(params).getBytes());
+}
+inputStream = connection.getInputStream();
+result.onSuccess(streamToString(inputStream));
+......
+    
+ private static String streamToString(InputStream in) {
+        StringBuilder sb = new StringBuilder();//新建一个StringBuilder，用于一点一点
+        String oneLine;//流转换为字符串的一行
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));//
+        try {
+            while ((oneLine = reader.readLine()) != null) {//readLine方法将读取一行
+                sb.append(oneLine).append('\n');//拼接字符串并且增加换行，提高可读性
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       	return sb.toString();//将拼接好的字符串返回出去
+}
+
+```
+
+
+
+最后别忘了关闭连接和流
+
+```java
+if (connection!=null) connection.disconnect();
+if (outputStream !=null) {
+    try {
+        outputStream.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+if (inputStream !=null) {
+    try {
+        inputStream.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+
+
+这样我们的网络请求封装就差不多了。
+
+
+
+好了我们拿着我们的网络请求工具类去做一次网络请求。
+
+
+
+如果时间充足的话现场Code......(顺便可以提一提网络请求内存泄漏的问题)
 
 # 最后
 
