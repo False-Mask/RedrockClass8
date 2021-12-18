@@ -1,35 +1,113 @@
-> # Android补充复习课
->
-> - 可以提前做一个意见收集表  把前面不太懂的内容 统一一下
-> - **针对**前面不太懂的内容 做一些知识的**重复和梳理**
-> - **约束布局的讲解**   **略提适配有关**
-> - 再次强调 **命名规范**
-> - **sp数据库的使用**
-> - **权限的申请**
-> - 拍照和相册的调用
-> - **用基础网络请求  稍微封装**  做一个网络请求的**模拟开发流程**  发源代码
-
-
-
-> 安卓复习课 
->
-> 复习前面所学重点知识 
->
-> 多媒体技术(拍照，播放音频，播放视频等) 动态权限申请 实战：综合接口和网络请求，模拟开发流程写一个界面展示
-
-
-
-
-
 # RedRock Class 8
 
-本次为移动开发第8次课程，本次课程主要以复习为主，新的内容并不多。
+本次为移动开发第8次课程，本次课程主要以复习为主，新课内容包含多媒体使用，权限申请。Sp数据库，ConstraitLayout。
 
 
 
 ## ~~P~~review
 
-Review和Preview有个P的区别。
+- > 第一节 ——by 兮姐姐
+  >
+  > - 移动开发与Java的基础引入
+  > - Java基本数据类型
+  > - 引用数据类型
+  > - 常量与变量
+  > - 修饰符
+  > - 运算符
+  > - 输入输出
+  > - 流程控制
+  > - 数组
+  > - 排序
+  >
+  > 
+  >
+  > Java面向过程
+
+  
+  
+- > 第二节 —— by 廖老师
+  >
+  > - 面向对象引入
+  > - 类与对象
+  > - 访问修饰符
+  > - 方法
+  > - this
+  > - 面向对象3特征
+  > - Github
+  >
+  > 
+  >
+  > 面向对象初级
+
+  
+  
+- > 第三节  —— by 邱天姐姐
+  >
+  > - final
+  > - 接口
+  > - 抽象类
+  > - 内部类
+  >
+  > 
+  >
+  > 面向对象进阶
+
+  
+
+- > 第四节 —— by 冲哥
+  >
+  > - 异常处理
+  > - 泛型
+  > - 集合框架
+  > - IO流
+  > - 反射
+  >
+  > 
+  >
+  > JavaSE结课
+
+  
+
+- > 第五节 —— by 郭神
+  >
+  > - Android Studio安装和基础配置
+  > - 项目结构与Hello World
+  > - Activity/Fragment
+  > - View/ViewGroup
+  > - 命名规范
+  > - ConstraintLayout
+  >
+  > 
+  >
+  > Android基础 开发 基础控件认知
+
+  
+
+- > 第六节 —— by 泰giegie
+  >
+  > - 资源文件
+  > - 黑夜模式适配
+  > - Material Design
+  > - RecyclerView
+  > - ViewPager2
+  > - TabLayout
+  > - As使用技巧
+  >
+  > 
+  >
+  > Android 控件进阶
+
+  
+
+- > 第六节 —— 叶师傅
+  >
+  > - 多线程
+  > - 网络请求
+  > - Git
+  >
+  > 
+  >
+  > Android 网络编程
 
 
 
@@ -66,7 +144,7 @@ boolean a = false;
 
 正确的应该是mainfeature
 
-子所以这样命名是因为不合理的包名称可能会引发as或者idea的报错。
+之所以这样命名是因为不合理的包名称可能会引发as或者idea的报错。
 
 所以不习惯的也忍忍。
 
@@ -188,7 +266,7 @@ Constraintlayout好用啊，这我熟啊。
 
 #### 基础使用
 
-当我直接从Design页面中拖拽出某个View的时候它其实时会报错的
+当我直接从Design页面中拖拽出某个View的时候它其实是会报错的
 
 ![image-20211205151922752](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211205151922752.png)
 
@@ -681,7 +759,7 @@ SharedPreferences又叫SP（为了方便，下文的SP均代指SharedPreferences
 
 键值对就是一个二元的组合，类似于这样key-value
 
-"a"-1 ，,"1"->3,3->3这些都是键值对。
+"a"-1 ，,"1"-3,3-3这些都是键值对。
 
 很奇怪？为什么要讲这个？因为我们的日常开发中可能会用到。
 
@@ -1395,7 +1473,9 @@ mediaPlayer.start();
 
 详细介绍可自行翻阅[官方文档](https://developer.android.google.cn/reference/android/media/MediaPlayer)。
 
+[Bilibili](https://www.bilibili.com/video/BV18541157Ni?t=5.9)（内容较少）
 
+[Bilibili](https://www.bilibili.com/video/BV1KU4y1j7e7?t=5.0)（内容较多）
 
 
 
@@ -1723,7 +1803,7 @@ private static String appendParams(HashMap<String, String> params) {
             stringBuilder.append(s).append("=").append(params.get(s)).append("&");
         }
         if (stringBuilder.length() != 0) {
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length() - );
         }
         return stringBuilder.toString();
 }
@@ -1822,8 +1902,6 @@ if (inputStream !=null) {
 
 
 如果时间充足的话现场Code......(顺便可以提一提网络请求内存泄漏的问题)
-
-# 最后
 
 
 

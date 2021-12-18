@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/net" />
             <option value="$PROJECT_DIR$/permission" />
             <option value="$PROJECT_DIR$/sp" />
+            <option value="$PROJECT_DIR$/temp" />
+            <option value="$PROJECT_DIR$/ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
