@@ -710,7 +710,7 @@ barrier是一个帮助类。
 
 发现什么了，语言变化了，TextView的长度变了，TextView跑到EditText那里去了。这样不好
 
-<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164452083.png" alt="image-20211212164452083" style="zoom:25%;" />
+<img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211212164452083.png" alt="image-20211212164452083" style="zoom: 25%;" />
 
 这时候就该Barrier上场了。删掉GuideLine，加入一个Barrier，然后把两个TextView加入进去，然后设置Barrier的方向为right。
 
@@ -1611,7 +1611,7 @@ SoundPool的使用大致就是如此
 
   ![image-20211211231800217](https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211231800217.png)
 
-  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211231656916.png" alt="image-20211211231656916" style="zoom:25%;" />
+  <img src="https://gitee.com/False_Mask/pics/raw/master/PicsAndGifs/image-20211211231656916.png" alt="image-20211211231656916" style="zoom: 25%;" />
 
   
 
@@ -1773,7 +1773,7 @@ Camera
 
 本次选用的封装的是HttpURLCtonnection。会和IO流有比较多的接触。（这里会稍微复习一下使用HttpURLConnection进行网络请求的步骤）。
 
-我们进行HttpURLCtonnection网络请求一般要进行如下步骤
+我们进行HttpURLConnection网络请求一般要进行如下步骤
 
 - 获取HttpURLCtonnection实例
 - 调用HttpURLCtonnection.connect开启连接

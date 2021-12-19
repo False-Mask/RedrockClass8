@@ -14,11 +14,6 @@ public class NetUtils {
 
     public static Cancel request(String url, HashMap<String, String> params, String method, NetResult result) {
         Thread job = new Thread(()->{
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             String mUrl = appendUrl(url, params, method);
             HttpURLConnection connection = null;
             InputStream inputStream = null;
@@ -85,7 +80,9 @@ public class NetUtils {
         connection.setRequestMethod(method);
         connection.setConnectTimeout(8000);//设置最大连接时间，单位为毫
         connection.setReadTimeout(8000);//设置最大的读取时间，单位为毫秒，
-        connection.setDoOutput(true);//允许输入流
+        if (method.equalsIgnoreCase("post")){
+            connection.setDoOutput(true);//允许输入流
+        }
         connection.setDoInput(true);//允许输出流
     }
 
@@ -101,7 +98,7 @@ public class NetUtils {
             stringBuilder.append(s).append("=").append(params.get(s)).append("&");
         }
         if (stringBuilder.length() != 0) {
-            stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length() - 1);
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length() );
         }
         return stringBuilder.toString();
     }

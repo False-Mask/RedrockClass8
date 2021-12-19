@@ -39,7 +39,7 @@ public class DangerousActivity extends AppCompatActivity {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE)) {
                     goSetting();
                 } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                   ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
                 }
             }
         });

@@ -29,7 +29,7 @@ public class Fragment02 extends Fragment {
         btnJump.setOnClickListener((v)->{
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.f_container,new Fragment03());
-            transaction.addToBackStack(null);
+            //transaction.addToBackStack(null);
             transaction.commit();
         });
     }
