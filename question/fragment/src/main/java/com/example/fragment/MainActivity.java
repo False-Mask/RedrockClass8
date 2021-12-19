@@ -1,10 +1,9 @@
-package com.example.temp;
+package com.example.fragment;
 
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;

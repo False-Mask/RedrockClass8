@@ -1803,7 +1803,7 @@ private static String appendParams(HashMap<String, String> params) {
             stringBuilder.append(s).append("=").append(params.get(s)).append("&");
         }
         if (stringBuilder.length() != 0) {
-            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length() - );
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
         }
         return stringBuilder.toString();
 }
@@ -1905,5 +1905,7 @@ if (inputStream !=null) {
 
 
 
+# 最后
 
+在网校的一学期是疲惫的，充实的。但幸运的是当你们看到或听到这段话的时候你们已经挺过来了。毋庸置疑，你们有了很大的提升，学到了很多东西，这一切是你们自己拼搏来的。但路漫漫其修远兮，前方道路漫长，望大家在今后的日子中莫要懈怠，这也才对得起你们熬的每一个夜，掉的每一根头发，坚持下去，这样才不辜负自己的每一份努力。加油！！！
 

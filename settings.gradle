@@ -8,10 +8,14 @@ dependencyResolutionManagement {
 }
 rootProject.name = "RedrockClass8"
 include ':app'
-include ':sp'
-include ':constraintlayout'
-include ':permission'
-include ':multimedia'
-include ':net'
-include ':temp'
-include ':ui'
+include ':question'
+include ':question:fragment'
+include ':question:ui'
+
+include ':demos'
+include ':demos:sp'
+include ':demos:constraintlayout'
+include ':demos:permission'
+include ':demos:multimedia'
+include ':demos:net'
+

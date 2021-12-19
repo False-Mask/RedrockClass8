@@ -12,13 +12,15 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/constraintlayout" />
-            <option value="$PROJECT_DIR$/multimedia" />
-            <option value="$PROJECT_DIR$/net" />
-            <option value="$PROJECT_DIR$/permission" />
-            <option value="$PROJECT_DIR$/sp" />
-            <option value="$PROJECT_DIR$/temp" />
-            <option value="$PROJECT_DIR$/ui" />
+            <option value="$PROJECT_DIR$/demos" />
+            <option value="$PROJECT_DIR$/demos/constraintlayout" />
+            <option value="$PROJECT_DIR$/demos/multimedia" />
+            <option value="$PROJECT_DIR$/demos/net" />
+            <option value="$PROJECT_DIR$/demos/permission" />
+            <option value="$PROJECT_DIR$/demos/sp" />
+            <option value="$PROJECT_DIR$/question" />
+            <option value="$PROJECT_DIR$/question/fragment" />
+            <option value="$PROJECT_DIR$/question/ui" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
